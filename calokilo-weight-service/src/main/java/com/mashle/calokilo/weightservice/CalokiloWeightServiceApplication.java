@@ -1,13 +1,13 @@
-package com.mashle.calokilo;
+package com.mashle.calokilo.weightservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class CalokiloApplication {
+public class CalokiloWeightServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CalokiloApplication.class, args);
+		SpringApplication.run(CalokiloWeightServiceApplication.class, args);
 	}
 
 }
