@@ -1,10 +1,10 @@
-package com.mashle.calokilo.weightservice;
+package com.mashle.calokilo.userservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CalokiloWeightServiceApplicationTests {
+class UserServiceApplicationTests {
 
 	@Test
 	void contextLoads() {
