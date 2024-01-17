@@ -1,6 +1,8 @@
 package com.mashle.calokilo.userservice.it;
 
+import com.mashle.calokilo.userservice.application.responses.GetAllUsersResponse;
 import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
-public class UserControllerTest {
+class UserControllerTest {
 
     @Container
     @ServiceConnection
@@ -26,7 +28,6 @@ public class UserControllerTest {
 
     @Autowired
     WebTestClient webTestClient;
-
 
     @Test
     void connectionEstablished() {
@@ -59,7 +60,7 @@ public class UserControllerTest {
         response
                 .expectStatus().isCreated()
                 .expectBody()
-                    .jsonPath("$.id").isEqualTo(1L)
+                    .jsonPath("$.id").isEqualTo(11L)
                     .jsonPath("$.firstName").isEqualTo("John")
                     .jsonPath("$.email").isEqualTo("john@gmail.com")
                     .jsonPath("$.password").doesNotExist()
@@ -90,5 +91,19 @@ public class UserControllerTest {
 
         // Then
         response.expectStatus().is5xxServerError();
+    }
+
+    @Test
+    void shouldGetAllUsers_whenAtLeastOneUserExists_thenReturnUserList() {
+        // When
+        WebTestClient.ResponseSpec response = webTestClient.get()
+                .uri("/users")
+                .exchange();
+
+        // Then
+        response.expectStatus().isOk();
+        response.expectBody()
+                .jsonPath("$.users").isArray()
+                .jsonPath("$.users.length()").isEqualTo(10);
     }
 }

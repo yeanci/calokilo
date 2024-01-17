@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class UserEntityTest {
+class UserEntityTest {
 
     @Test
     void shouldMapUserEntityToUser() {

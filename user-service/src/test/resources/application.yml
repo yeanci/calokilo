@@ -1,0 +1,7 @@
+spring:
+    liquibase:
+        change-log: classpath:test-db/changelog/db.changelog-master.yaml
+
+eureka:
+    client:
+        enabled: false

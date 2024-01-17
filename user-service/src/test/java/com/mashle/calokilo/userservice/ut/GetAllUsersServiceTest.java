@@ -2,28 +2,29 @@ package com.mashle.calokilo.userservice.ut;
 
 import com.mashle.calokilo.userservice.domain.User;
 import com.mashle.calokilo.userservice.domain.ports.UserRepository;
-import com.mashle.calokilo.userservice.domain.services.CreateUserService;
+import com.mashle.calokilo.userservice.domain.services.GetAllUsersService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class CreateUserServiceTest {
+class GetAllUsersServiceTest {
 
     private UserRepository userRepository;
-    private CreateUserService createUserService;
+    private GetAllUsersService getAllUsersService;
 
     private User validUser;
 
     @BeforeEach
     void setup() {
         userRepository = mock(UserRepository.class);
-        createUserService = new CreateUserService(userRepository);
+        getAllUsersService = new GetAllUsersService(userRepository);
 
         validUser = User.builder()
                 .id(1L)
@@ -36,13 +37,24 @@ class CreateUserServiceTest {
     }
 
     @Test
-    void createUser_whenValidUser_thenReturnCreatedUser() {
-        when(userRepository.save(any(User.class))).thenReturn(validUser);
+    void getAllUsers_whenAtLeastOneUserExists_thenReturnListOfUsers() {
+        when(userRepository.findAll()).thenReturn(List.of(validUser));
 
         // when
-        User createdUser = createUserService.createUser(validUser);
+        var users = getAllUsersService.getAllUsers();
 
         // then
-        assertThat(createdUser).isEqualTo(validUser);
+        assertThat(users).isEqualTo(List.of(validUser));
+    }
+
+    @Test
+    void getAllUsers_whenNoUserExists_thenReturnEmptyListOfUsers() {
+        when(userRepository.findAll()).thenReturn(Collections.emptyList());
+
+        // when
+        var users = getAllUsersService.getAllUsers();
+
+        // then
+        assertThat(users).isEmpty();
     }
 }

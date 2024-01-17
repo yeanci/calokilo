@@ -2,14 +2,13 @@ package com.mashle.calokilo.userservice.ut;
 
 import com.mashle.calokilo.userservice.domain.User;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class UserTest {
+class UserTest {
 
     @Test
     void createUser_WhenValidData_ThenCreate() {

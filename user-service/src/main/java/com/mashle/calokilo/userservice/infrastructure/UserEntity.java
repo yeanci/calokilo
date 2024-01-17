@@ -3,11 +3,13 @@ package com.mashle.calokilo.userservice.infrastructure;
 import com.mashle.calokilo.userservice.domain.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "users")
 public class UserEntity {
 

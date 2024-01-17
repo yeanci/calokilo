@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Component
 @AllArgsConstructor
 public class PostgresUserRepository implements UserRepository {
@@ -17,5 +19,10 @@ public class PostgresUserRepository implements UserRepository {
         UserEntity saved = springPgUserRepository.save(new UserEntity(user));
 
         return saved.toCreatedUser();
+    }
+
+    @Override
+    public List<User> findAll() {
+        return springPgUserRepository.findAll().stream().map(UserEntity::toCreatedUser).toList();
     }
 }

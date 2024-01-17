@@ -4,9 +4,7 @@ import com.mashle.calokilo.userservice.domain.User;
 
 import java.util.List;
 
-public interface UserRepository {
+public interface GetAllUsersPort {
 
-    User save(User user);
-
-    List<User> findAll();
+    List<User> getAllUsers();
 }
