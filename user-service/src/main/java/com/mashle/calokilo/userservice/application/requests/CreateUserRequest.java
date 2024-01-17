@@ -1,4 +1,4 @@
-package com.mashle.calokilo.userservice.application.controllers;
+package com.mashle.calokilo.userservice.application.requests;
 
 import com.mashle.calokilo.userservice.domain.User;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,5 @@
 package com.mashle.calokilo.userservice.it;
 
-import com.mashle.calokilo.userservice.application.controllers.UserResource;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,7 @@ public class UserControllerTest {
 
     @Test
     @Rollback
-    public void shouldCreateUser_whenValidData_thenCreateUser() {
+    void shouldCreateUser_whenValidData_thenCreateUser() {
         // Given
         String validUser = """
                     {
@@ -70,7 +69,7 @@ public class UserControllerTest {
 
     @Test
     @Rollback
-    public void shouldCreateUser_whenNotValidData_thenReturnError() {
+    void shouldCreateUser_whenNotValidData_thenReturnError() {
         // Given
         String invalidUser = """
                     {
