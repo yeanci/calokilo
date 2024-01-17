@@ -1,4 +1,9 @@
+server:
+    port: 8080
+
 spring:
+    application:
+        name: user-service
     datasource:
         url: jdbc:postgresql://localhost:5432/calokilo
         username: calokilo-pg
@@ -14,3 +19,8 @@ spring:
         properties:
             hibernate:
                 dialect: org.hibernate.dialect.PostgreSQLDialect
+
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://localhost:8761/eureka/
