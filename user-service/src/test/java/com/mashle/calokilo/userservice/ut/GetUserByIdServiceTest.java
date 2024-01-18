@@ -3,6 +3,7 @@ package com.mashle.calokilo.userservice.ut;
 import com.mashle.calokilo.userservice.domain.User;
 import com.mashle.calokilo.userservice.domain.ports.UserRepository;
 import com.mashle.calokilo.userservice.domain.services.GetUserByIdService;
+import com.mashle.calokilo.userservice.domain.shared.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -37,24 +39,20 @@ class GetUserByIdServiceTest {
     }
 
     @Test
-    void getUserById_whenIdValid_thenReturnUser() {
+    void getUserById_whenIdValid_thenReturnUser() throws UserNotFoundException {
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(validUser));
 
         // when
-        Optional<User> user = getUserByIdService.getUserById(1L);
+        User user = getUserByIdService.getUserById(1L);
 
         // then
-        assertThat(user).contains(validUser);
+        assertThat(user).isEqualTo(validUser);
     }
 
     @Test
     void getUserById_whenIdNotValid_thenReturnEmptyOptional() {
         when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        // when
-        Optional<User> user = getUserByIdService.getUserById(56L);
-
-        // then
-        assertThat(user).isEmpty();
+        assertThrows(UserNotFoundException.class, () -> getUserByIdService.getUserById(56L));
     }
 }

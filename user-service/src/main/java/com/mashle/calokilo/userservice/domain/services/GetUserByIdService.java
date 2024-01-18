@@ -4,6 +4,7 @@ import com.mashle.calokilo.userservice.domain.User;
 import com.mashle.calokilo.userservice.domain.ports.GetUserByIdPort;
 import com.mashle.calokilo.userservice.domain.ports.UserRepository;
 import com.mashle.calokilo.userservice.domain.shared.DomainService;
+import com.mashle.calokilo.userservice.domain.shared.UserNotFoundException;
 
 import java.util.Optional;
 
@@ -17,7 +18,7 @@ public class GetUserByIdService implements GetUserByIdPort{
     }
 
     @Override
-    public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id);
+    public User getUserById(Long id) throws UserNotFoundException {
+        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 }

@@ -88,7 +88,7 @@ class UserControllerTest {
                 .exchange();
 
         // Then
-        response.expectStatus().is5xxServerError();
+        response.expectStatus().isBadRequest();
     }
 
     @Test
@@ -131,6 +131,6 @@ class UserControllerTest {
                 .exchange();
 
         // Then
-        response.expectStatus().is5xxServerError();
+        response.expectStatus().isNotFound();
     }
 }

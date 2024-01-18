@@ -6,6 +6,8 @@ import com.mashle.calokilo.userservice.domain.User;
 import com.mashle.calokilo.userservice.domain.ports.CreateUserPort;
 import com.mashle.calokilo.userservice.domain.ports.GetAllUsersPort;
 import com.mashle.calokilo.userservice.domain.ports.GetUserByIdPort;
+import com.mashle.calokilo.userservice.domain.shared.NotValidUserException;
+import com.mashle.calokilo.userservice.domain.shared.UserNotFoundException;
 import jakarta.ws.rs.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,7 +27,7 @@ public class UserController {
     private GetUserByIdPort getUserByIdPort;
 
     @PostMapping
-    public ResponseEntity<UserResource> createUser(@RequestBody CreateUserRequest userRequest) {
+    public ResponseEntity<UserResource> createUser(@RequestBody CreateUserRequest userRequest) throws NotValidUserException {
         UserResource saved = new UserResource(createUserPort.createUser(userRequest.toUser()));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
@@ -39,14 +41,9 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResource> getUserById(@PathVariable Long id) {
-        Optional<User> user = getUserByIdPort.getUserById(id);
+    public ResponseEntity<UserResource> getUserById(@PathVariable Long id) throws UserNotFoundException {
+        User user = getUserByIdPort.getUserById(id);
 
-        if(user.isPresent()) {
-            return ResponseEntity.status(HttpStatus.OK).body(new UserResource(user.get()));
-        } else {
-            throw new NotFoundException();
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(new UserResource(user));
     }
-
 }
