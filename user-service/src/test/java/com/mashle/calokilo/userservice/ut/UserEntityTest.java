@@ -21,7 +21,7 @@ class UserEntityTest {
                 180);
 
         // When
-        User user = userEntity.toCreatedUser();
+        User user = userEntity.toUser();
 
         // Then
         assertThat(user.id()).isEqualTo(1L);

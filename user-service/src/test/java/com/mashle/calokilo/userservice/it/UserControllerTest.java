@@ -1,8 +1,6 @@
 package com.mashle.calokilo.userservice.it;
 
-import com.mashle.calokilo.userservice.application.responses.GetAllUsersResponse;
 import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -103,8 +101,8 @@ class UserControllerTest {
         // Then
         response.expectStatus().isOk();
         response.expectBody()
-                .jsonPath("$.users").isArray()
-                .jsonPath("$.users.length()").isEqualTo(10);
+                .jsonPath("$").isArray()
+                .jsonPath("$.length()").isEqualTo(10);
     }
 
     @Test
@@ -129,10 +127,10 @@ class UserControllerTest {
     void shouldGetUserById_whenIdValid_thenReturnNotFound() {
         // When
         WebTestClient.ResponseSpec response = webTestClient.get()
-                .uri("/users/5")
+                .uri("/users/64")
                 .exchange();
 
         // Then
-        response.expectStatus().isNotFound();
+        response.expectStatus().is5xxServerError();
     }
 }

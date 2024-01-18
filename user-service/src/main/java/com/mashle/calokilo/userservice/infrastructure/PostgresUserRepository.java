@@ -4,7 +4,6 @@ import com.mashle.calokilo.userservice.domain.User;
 import com.mashle.calokilo.userservice.domain.ports.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,16 +18,16 @@ public class PostgresUserRepository implements UserRepository {
     public User save(User user) {
         UserEntity saved = springPgUserRepository.save(new UserEntity(user));
 
-        return saved.toCreatedUser();
+        return saved.toUser();
     }
 
     @Override
     public List<User> findAll() {
-        return springPgUserRepository.findAll().stream().map(UserEntity::toCreatedUser).toList();
+        return springPgUserRepository.findAll().stream().map(UserEntity::toUser).toList();
     }
 
     @Override
     public Optional<User> findById(Long id) {
-        return Optional.empty();
+        return springPgUserRepository.findById(id).map(UserEntity::toUser);
     }
 }

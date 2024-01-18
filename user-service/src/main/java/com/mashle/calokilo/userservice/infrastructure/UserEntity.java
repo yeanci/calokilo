@@ -42,12 +42,12 @@ public class UserEntity {
     }
 
 
-    public User toCreatedUser() {
+    public User toUser() {
         return User.builder()
                 .id(this.id)
                 .firstName(this.firstName)
                 .email(this.email)
-                .password(password)
+                .password(this.password)
                 .birthDate(this.birthDate)
                 .height(this.height)
                 .build();
