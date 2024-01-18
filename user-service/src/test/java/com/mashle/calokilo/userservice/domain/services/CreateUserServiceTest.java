@@ -1,4 +1,4 @@
-package com.mashle.calokilo.userservice.ut;
+package com.mashle.calokilo.userservice.domain.services;
 
 import com.mashle.calokilo.userservice.domain.User;
 import com.mashle.calokilo.userservice.domain.ports.UserRepository;
@@ -39,10 +39,21 @@ class CreateUserServiceTest {
     void createUser_whenValidUser_thenReturnCreatedUser() {
         when(userRepository.save(any(User.class))).thenReturn(validUser);
 
-        // when
+        // When
         User createdUser = createUserService.createUser(validUser);
 
-        // then
+        // Then
+        assertThat(createdUser).isEqualTo(validUser);
+    }
+
+    @Test
+    void createUser_whenInvalidUser_thenThrowException() {
+        when(userRepository.save(any(User.class))).thenReturn(validUser);
+
+        // When
+        User createdUser = createUserService.createUser(validUser);
+
+        // Then
         assertThat(createdUser).isEqualTo(validUser);
     }
 }

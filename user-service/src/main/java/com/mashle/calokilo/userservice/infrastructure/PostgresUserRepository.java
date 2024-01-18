@@ -30,4 +30,9 @@ public class PostgresUserRepository implements UserRepository {
     public Optional<User> findById(Long id) {
         return springPgUserRepository.findById(id).map(UserEntity::toUser);
     }
+
+    @Override
+    public void delete(Long id) {
+        springPgUserRepository.deleteById(id);
+    }
 }

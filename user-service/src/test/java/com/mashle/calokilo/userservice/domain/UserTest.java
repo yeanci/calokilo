@@ -1,6 +1,7 @@
-package com.mashle.calokilo.userservice.ut;
+package com.mashle.calokilo.userservice.domain;
 
 import com.mashle.calokilo.userservice.domain.User;
+import com.mashle.calokilo.userservice.domain.shared.NotValidUserException;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -26,7 +27,7 @@ class UserTest {
 
     @Test
     void createUser_WhenFirstNameNull_ThenThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NotValidUserException.class, () -> {
             User.builder()
                     .id(1L)
                     .firstName(null)
@@ -40,7 +41,7 @@ class UserTest {
 
     @Test
     void createUser_WhenFirstNameEmpty_ThenThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NotValidUserException.class, () -> {
             User.builder()
                     .id(1L)
                     .firstName("") // <- Empty first name
@@ -54,7 +55,7 @@ class UserTest {
 
     @Test
     void createUser_WhenFirstNameTooLong_ThenThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NotValidUserException.class, () -> {
             User.builder()
                     .id(1L)
                     .firstName("John James Jack Davis Albert Harry")  // <- Too long first name
@@ -68,7 +69,7 @@ class UserTest {
 
     @Test
     void createUser_WhenEmailEmpty_ThenThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NotValidUserException.class, () -> {
             User.builder()
                     .id(1L)
                     .firstName("John")
@@ -82,7 +83,7 @@ class UserTest {
 
     @Test
     void createUser_WhenEmailNull_ThenThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NotValidUserException.class, () -> {
             User.builder()
                     .id(1L)
                     .firstName("John")
@@ -96,7 +97,7 @@ class UserTest {
 
     @Test
     void createUser_WhenEmailNotValid_ThenThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NotValidUserException.class, () -> {
             User.builder()
                     .id(1L)
                     .firstName("John")
@@ -110,7 +111,7 @@ class UserTest {
 
     @Test
     void createUser_WhenPasswordEmpty_ThenThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NotValidUserException.class, () -> {
             User.builder()
                     .id(1L)
                     .firstName("John")
@@ -124,7 +125,7 @@ class UserTest {
 
     @Test
     void createUser_WhenPasswordNull_ThenThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NotValidUserException.class, () -> {
             User.builder()
                     .id(1L)
                     .firstName("John")
@@ -138,7 +139,7 @@ class UserTest {
 
     @Test
     void createUser_WhenPasswordTooShort_ThenThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NotValidUserException.class, () -> {
             User.builder()
                     .id(1L)
                     .firstName("John")
@@ -152,7 +153,7 @@ class UserTest {
 
     @Test
     void createUser_WhenBirthDateNull_ThenThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NotValidUserException.class, () -> {
             User.builder()
                     .id(1L)
                     .firstName("John")
@@ -166,7 +167,7 @@ class UserTest {
 
     @Test
     void createUser_WhenBirthDateNotInThePast_ThenThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NotValidUserException.class, () -> {
             User.builder()
                     .id(1L)
                     .firstName("John")
@@ -180,7 +181,7 @@ class UserTest {
 
     @Test
     void createUser_WhenHeightNegative_ThenThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NotValidUserException.class, () -> {
             User.builder()
                     .id(1L)
                     .firstName("John")
@@ -194,7 +195,7 @@ class UserTest {
 
     @Test
     void createUser_WhenHeightTooHigh_ThenThrowsException() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NotValidUserException.class, () -> {
             User.builder()
                     .id(1L)
                     .firstName("John")

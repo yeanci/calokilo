@@ -1,4 +1,4 @@
-package com.mashle.calokilo.userservice.it;
+package com.mashle.calokilo.userservice.application;
 
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
-class UserControllerTest {
+class UserControllerIntegrationTest {
 
     @Container
     @ServiceConnection

@@ -12,4 +12,6 @@ public interface UserRepository {
     List<User> findAll();
 
     Optional<User> findById(Long id);
+
+    void delete(Long id);
 }

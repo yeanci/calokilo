@@ -1,4 +1,4 @@
-package com.mashle.calokilo.userservice.ut;
+package com.mashle.calokilo.userservice.infrastructure;
 
 import com.mashle.calokilo.userservice.domain.User;
 import com.mashle.calokilo.userservice.infrastructure.UserEntity;

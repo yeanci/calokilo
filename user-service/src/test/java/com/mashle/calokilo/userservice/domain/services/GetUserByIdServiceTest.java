@@ -1,4 +1,4 @@
-package com.mashle.calokilo.userservice.ut;
+package com.mashle.calokilo.userservice.domain.services;
 
 import com.mashle.calokilo.userservice.domain.User;
 import com.mashle.calokilo.userservice.domain.ports.UserRepository;
@@ -42,10 +42,10 @@ class GetUserByIdServiceTest {
     void getUserById_whenIdValid_thenReturnUser() throws UserNotFoundException {
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(validUser));
 
-        // when
+        // When
         User user = getUserByIdService.getUserById(1L);
 
-        // then
+        // Then
         assertThat(user).isEqualTo(validUser);
     }
 
