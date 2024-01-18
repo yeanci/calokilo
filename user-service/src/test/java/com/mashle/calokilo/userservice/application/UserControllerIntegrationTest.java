@@ -133,4 +133,28 @@ class UserControllerIntegrationTest {
         // Then
         response.expectStatus().isNotFound();
     }
+
+    @Test
+    @Rollback
+    void shouldDeleteUser_whenIdValid_thenDeleteUser() {
+        // When
+        WebTestClient.ResponseSpec response = webTestClient.delete()
+                .uri("/users/10")
+                .exchange();
+
+        // Then
+        response.expectStatus().isNoContent();
+    }
+
+    @Test
+    @Rollback
+    void shouldDeleteUser_whenIdInvalid_thenReturnNotFound() {
+        // When
+        WebTestClient.ResponseSpec response = webTestClient.delete()
+                .uri("/users/50")
+                .exchange();
+
+        // Then
+        response.expectStatus().isNotFound();
+    }
 }

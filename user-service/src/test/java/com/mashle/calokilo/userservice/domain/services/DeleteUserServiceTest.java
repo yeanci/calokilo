@@ -39,7 +39,7 @@ class DeleteUserServiceTest {
     }
 
     @Test
-    void deleteUser_whenIdValid_thenDeleteUser() {
+    void deleteUser_whenIdValid_thenDeleteUser() throws UserNotFoundException {
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(validUser));
 
         // When
