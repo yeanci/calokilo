@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @AllArgsConstructor
@@ -24,5 +25,10 @@ public class PostgresUserRepository implements UserRepository {
     @Override
     public List<User> findAll() {
         return springPgUserRepository.findAll().stream().map(UserEntity::toCreatedUser).toList();
+    }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        return Optional.empty();
     }
 }

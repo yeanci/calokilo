@@ -106,4 +106,33 @@ class UserControllerTest {
                 .jsonPath("$.users").isArray()
                 .jsonPath("$.users.length()").isEqualTo(10);
     }
+
+    @Test
+    void shouldGetUserById_whenIdValid_thenReturnUser() {
+        // When
+        WebTestClient.ResponseSpec response = webTestClient.get()
+                .uri("/users/5")
+                .exchange();
+
+        // Then
+        response.expectStatus().isOk();
+        response.expectBody()
+                .jsonPath("$.id").isEqualTo(5L)
+                .jsonPath("$.firstName").isEqualTo("Elton")
+                .jsonPath("$.email").isEqualTo("elton@gmail.com")
+                .jsonPath("$.password").doesNotExist()
+                .jsonPath("$.birthDate").isEqualTo("1980-12-01")
+                .jsonPath("$.height").isEqualTo(180);
+    }
+
+    @Test
+    void shouldGetUserById_whenIdValid_thenReturnNotFound() {
+        // When
+        WebTestClient.ResponseSpec response = webTestClient.get()
+                .uri("/users/5")
+                .exchange();
+
+        // Then
+        response.expectStatus().isNotFound();
+    }
 }
