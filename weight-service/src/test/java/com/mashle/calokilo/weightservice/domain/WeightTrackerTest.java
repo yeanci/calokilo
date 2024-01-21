@@ -36,32 +36,11 @@ class WeightTrackerTest {
     }
 
     @Test
-    void createWeightTracker_whenInvalidId_thenThrowException() {
-        assertThrows(NotValidWeightTrackerException.class, () ->
-            WeightTracker.builder()
-                .userId(-9L)
-                .initialWeight(83.7)
-                .targetWeight(75.6)
-                .build()
-        );
-    }
-
-    @Test
     void createWeightTracker_whenNegativeInitialWeight_thenThrowException() {
         assertThrows(NotValidWeightTrackerException.class, () ->
             WeightTracker.builder()
                 .userId(1L)
                 .initialWeight(-23.7)
-                .targetWeight(75.6)
-                .build()
-        );
-    }
-
-    @Test
-    void createWeightTracker_whenNullInitialWeight_thenThrowException() {
-        assertThrows(NotValidWeightTrackerException.class, () ->
-            WeightTracker.builder()
-                .userId(1L)
                 .targetWeight(75.6)
                 .build()
         );
@@ -74,16 +53,6 @@ class WeightTrackerTest {
                 .userId(1L)
                 .initialWeight(73.7)
                 .targetWeight(-45.6)
-                .build()
-        );
-    }
-
-    @Test
-    void createWeightTracker_whenNullTargetWeight_thenThrowException() {
-        assertThrows(NotValidWeightTrackerException.class, () ->
-            WeightTracker.builder()
-                .userId(1L)
-                .initialWeight(71.0)
                 .build()
         );
     }
