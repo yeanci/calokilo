@@ -15,7 +15,8 @@ public class CreateWeightTrackerService implements CreateWeightTrackerPort {
     }
 
     @Override
-    public void createWeightTracker(Long userId, double initialWeight, double targetWeight) {
+    public WeightTracker createWeightTracker(Long userId, double initialWeight, double targetWeight) {
 
+        return null;
     }
 }

@@ -4,5 +4,5 @@ import com.mashle.calokilo.weightservice.domain.WeightTracker;
 
 public interface WeightTrackerRepository {
 
-    void createWeightTrackerForUser(WeightTracker weightTracker);
+    WeightTracker save(WeightTracker weightTracker);
 }

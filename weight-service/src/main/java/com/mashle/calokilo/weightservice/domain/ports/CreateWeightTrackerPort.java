@@ -1,6 +1,8 @@
 package com.mashle.calokilo.weightservice.domain.ports;
 
+import com.mashle.calokilo.weightservice.domain.WeightTracker;
+
 public interface CreateWeightTrackerPort {
 
-    void createWeightTracker(Long userId, double initialWeight, double targetWeight);
+    WeightTracker createWeightTracker(Long userId, double initialWeight, double targetWeight);
 }
