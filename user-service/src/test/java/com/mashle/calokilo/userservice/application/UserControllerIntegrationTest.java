@@ -35,7 +35,7 @@ class UserControllerIntegrationTest {
 
     @Test
     @Rollback
-    void shouldCreateUser_whenValidData_thenCreateUser() {
+    void shouldCreateUser_whenValidUserAndWeights_thenCreateUser() {
         // Given
         String validUser = """
                     {
@@ -49,7 +49,12 @@ class UserControllerIntegrationTest {
 
         // When
         WebTestClient.ResponseSpec response = webTestClient.post()
-                .uri("/users")
+                .uri(uriBuilder -> uriBuilder
+                        .path("/users")
+                        .queryParam("initialWeight", 85.)
+                        .queryParam("targetWeight", 75.)
+                        .build()
+                )
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(validUser))
                 .exchange();
@@ -68,7 +73,7 @@ class UserControllerIntegrationTest {
 
     @Test
     @Rollback
-    void shouldCreateUser_whenNotValidData_thenReturnError() {
+    void shouldCreateUser_whenInvalidUser_thenReturnError() {
         // Given
         String invalidUser = """
                     {
@@ -82,9 +87,74 @@ class UserControllerIntegrationTest {
 
         // When
         WebTestClient.ResponseSpec response = webTestClient.post()
-                .uri("/users")
+                .uri(uriBuilder -> uriBuilder
+                        .path("/users")
+                        .queryParam("initialWeight", 85.)
+                        .queryParam("targetWeight", 75.)
+                        .build()
+                )
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(invalidUser))
+                .exchange();
+
+        // Then
+        response.expectStatus().isBadRequest();
+    }
+
+    @Test
+    @Rollback
+    void shouldCreateUser_whenValidUserAndInvalidInitialWeight_thenReturnError() {
+        // Given
+        String validUser = """
+                    {
+                        "firstName": "John",
+                        "email" : "john@gmail.com",
+                        "password": "mySecretP@ssword",
+                        "birthDate" : "1980-12-01",
+                        "height": 180
+                    }
+                """;
+
+        // When
+        WebTestClient.ResponseSpec response = webTestClient.post()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/users")
+                        .queryParam("initialWeight", -85.)
+                        .queryParam("targetWeight", 75.)
+                        .build()
+                )
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(validUser))
+                .exchange();
+
+        // Then
+        response.expectStatus().isBadRequest();
+    }
+
+    @Test
+    @Rollback
+    void shouldCreateUser_whenValidUserAndInvalidTargetWeight_thenReturnError() {
+        // Given
+        String validUser = """
+                    {
+                        "firstName": "John",
+                        "email" : "john@gmail.com",
+                        "password": "mySecretP@ssword",
+                        "birthDate" : "1980-12-01",
+                        "height": 180
+                    }
+                """;
+
+        // When
+        WebTestClient.ResponseSpec response = webTestClient.post()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/users")
+                        .queryParam("initialWeight", 85.)
+                        .queryParam("targetWeight", -75.)
+                        .build()
+                )
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(validUser))
                 .exchange();
 
         // Then

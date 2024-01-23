@@ -5,5 +5,5 @@ import com.mashle.calokilo.userservice.domain.shared.NotValidUserException;
 
 public interface CreateUserPort {
 
-    User createUser(User user) throws NotValidUserException;
+    User createUser(User user, double initialWeight, double targetWeight) throws NotValidUserException;
 }

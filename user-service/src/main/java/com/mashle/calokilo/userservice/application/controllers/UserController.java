@@ -27,8 +27,10 @@ public class UserController {
     private DeleteUserPort deleteUserPort;
 
     @PostMapping
-    public ResponseEntity<UserResource> createUser(@RequestBody CreateUserRequest userRequest) throws NotValidUserException {
-        UserResource saved = new UserResource(createUserPort.createUser(userRequest.toUser()));
+    public ResponseEntity<UserResource> createUser(@RequestBody CreateUserRequest userRequest,
+                                                   @RequestParam double initialWeight,
+                                                   @RequestParam double targetWeight) throws NotValidUserException {
+        UserResource saved = new UserResource(createUserPort.createUser(userRequest.toUser(), initialWeight, targetWeight));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }

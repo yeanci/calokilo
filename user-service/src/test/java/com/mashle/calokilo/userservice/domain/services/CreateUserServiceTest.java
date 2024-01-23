@@ -1,21 +1,24 @@
 package com.mashle.calokilo.userservice.domain.services;
 
 import com.mashle.calokilo.userservice.domain.User;
+import com.mashle.calokilo.userservice.domain.ports.UserCreatedMessenger;
 import com.mashle.calokilo.userservice.domain.ports.UserRepository;
 import com.mashle.calokilo.userservice.domain.services.CreateUserService;
+import com.mashle.calokilo.userservice.domain.shared.NotValidUserException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class CreateUserServiceTest {
 
     private UserRepository userRepository;
+    private UserCreatedMessenger userCreatedMessenger;
     private CreateUserService createUserService;
 
     private User validUser;
@@ -23,7 +26,8 @@ class CreateUserServiceTest {
     @BeforeEach
     void setup() {
         userRepository = mock(UserRepository.class);
-        createUserService = new CreateUserService(userRepository);
+        userCreatedMessenger = mock(UserCreatedMessenger.class);
+        createUserService = new CreateUserService(userRepository, userCreatedMessenger);
 
         validUser = User.builder()
                 .id(1L)
@@ -36,24 +40,34 @@ class CreateUserServiceTest {
     }
 
     @Test
-    void createUser_whenValidUser_thenReturnCreatedUser() {
+    void createUser_whenValidData_thenReturnCreatedUser() {
         when(userRepository.save(any(User.class))).thenReturn(validUser);
+        doNothing().when(userCreatedMessenger).notifyUserCreated(anyLong(), anyDouble(), anyDouble());
 
         // When
-        User createdUser = createUserService.createUser(validUser);
+        User createdUser = createUserService.createUser(validUser, 85., 75.);
 
         // Then
         assertThat(createdUser).isEqualTo(validUser);
     }
 
     @Test
-    void createUser_whenInvalidUser_thenThrowException() {
-        when(userRepository.save(any(User.class))).thenReturn(validUser);
+    void createUser_whenInvalidInitialWeight_thenThrowException() {
+        assertThrows(NotValidUserException.class, () ->
+                createUserService.createUser(validUser, -85., 75.)
+        );
 
-        // When
-        User createdUser = createUserService.createUser(validUser);
+        verify(userRepository, times(0)).save(any(User.class));
+        verify(userCreatedMessenger, times(0)).notifyUserCreated(anyLong(), anyDouble(), anyDouble());
+    }
 
-        // Then
-        assertThat(createdUser).isEqualTo(validUser);
+    @Test
+    void createUser_whenInvalidTargetWeight_thenThrowException() {
+        assertThrows(NotValidUserException.class, () ->
+                createUserService.createUser(validUser, 85., -75.)
+        );
+
+        verify(userRepository, times(0)).save(any(User.class));
+        verify(userCreatedMessenger, times(0)).notifyUserCreated(anyLong(), anyDouble(), anyDouble());
     }
 }

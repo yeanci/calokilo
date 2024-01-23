@@ -4,6 +4,7 @@ server:
 spring:
     application:
         name: user-service
+
     datasource:
         url: jdbc:postgresql://localhost:5432/calokilo
         username: calokilo-pg
@@ -19,6 +20,11 @@ spring:
         properties:
             hibernate:
                 dialect: org.hibernate.dialect.PostgreSQLDialect
+
+    activemq:
+        broker-url: tcp://localhost:61616
+        user: calokilo
+        password: veryStrongPassword
 
 eureka:
     client:
