@@ -17,4 +17,9 @@ public class MongoWeightTrackerRepository implements WeightTrackerRepository {
 
         return saved.toWeightTracker();
     }
+
+    @Override
+    public WeightTracker getById(Long userId) {
+        return null;
+    }
 }

@@ -6,8 +6,7 @@ import lombok.Builder;
 import java.time.LocalDate;
 
 @Builder
-public record WeightEntry(Long id,
-                          double weight,
+public record WeightEntry(double weight,
                           LocalDate entryDate) {
 
     public WeightEntry {

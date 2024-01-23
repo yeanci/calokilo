@@ -50,7 +50,7 @@ class GetUserByIdServiceTest {
     }
 
     @Test
-    void getUserById_whenIdNotValid_thenReturnEmptyOptional() {
+    void getUserById_whenIdNotValid_thenThrowException() {
         when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class, () -> getUserByIdService.getUserById(56L));
