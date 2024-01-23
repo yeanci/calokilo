@@ -1,6 +1,7 @@
 package com.mashle.calokilo.weightservice.domain.services;
 
 import com.mashle.calokilo.weightservice.domain.WeightTracker;
+import com.mashle.calokilo.weightservice.domain.ports.UserRepository;
 import com.mashle.calokilo.weightservice.domain.ports.WeightTrackerRepository;
 import com.mashle.calokilo.weightservice.domain.shared.NotValidWeightTrackerException;
 import com.mashle.calokilo.weightservice.domain.shared.UserNotFoundException;
@@ -15,6 +16,7 @@ import static org.mockito.Mockito.*;
 class CreateWeightTrackerServiceTest {
 
     private WeightTrackerRepository weightTrackerRepository;
+    private UserRepository userRepository;
     private CreateWeightTrackerService createWeightTrackerService;
 
     private WeightTracker validWeightTracker;
@@ -22,7 +24,8 @@ class CreateWeightTrackerServiceTest {
     @BeforeEach
     void setup() {
         weightTrackerRepository = mock(WeightTrackerRepository.class);
-        createWeightTrackerService = new CreateWeightTrackerService(weightTrackerRepository);
+        userRepository = mock(UserRepository.class);
+        createWeightTrackerService = new CreateWeightTrackerService(weightTrackerRepository, userRepository);
 
         validWeightTracker = WeightTracker.builder()
                 .userId(1L)
@@ -32,7 +35,8 @@ class CreateWeightTrackerServiceTest {
     }
 
     @Test
-    void createWeightTracker_whenValidData_thenReturnCreatedWeightTracker() {
+    void createWeightTracker_whenValidData_thenReturnCreatedWeightTracker() throws UserNotFoundException {
+        when(userRepository.exists(1L)).thenReturn(true);
         when(weightTrackerRepository.save(any(WeightTracker.class))).thenReturn(validWeightTracker);
 
         // When
@@ -44,6 +48,8 @@ class CreateWeightTrackerServiceTest {
 
     @Test
     void createWeightTracker_whenUserDoesNotExist_thenThrowException() {
+        when(userRepository.exists(1L)).thenReturn(false);
+
         assertThrows(UserNotFoundException.class, () ->
                 createWeightTrackerService.createWeightTracker(1L, 95.3, 75.)
         );
@@ -53,6 +59,8 @@ class CreateWeightTrackerServiceTest {
 
     @Test
     void createWeightTracker_whenInvalidInitialWeight_thenThrowException() {
+        when(userRepository.exists(1L)).thenReturn(true);
+
         assertThrows(NotValidWeightTrackerException.class, () ->
                 createWeightTrackerService.createWeightTracker(1L, -65.3, 75.)
         );
@@ -62,6 +70,8 @@ class CreateWeightTrackerServiceTest {
 
     @Test
     void createWeightTracker_whenInvalidTargetWeight_thenThrowException() {
+        when(userRepository.exists(1L)).thenReturn(true);
+
         assertThrows(NotValidWeightTrackerException.class, () ->
                 createWeightTrackerService.createWeightTracker(1L, 85.3, -75.)
         );

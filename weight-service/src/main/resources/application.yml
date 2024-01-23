@@ -5,6 +5,11 @@ spring:
     application:
         name: weight-service
 
+    activemq:
+        broker-url: tcp://localhost:61616
+        user: calokilo
+        password: veryStrongPassword
+
 eureka:
     client:
         serviceUrl:

@@ -1,11 +1,10 @@
 package com.mashle.calokilo.weightservice.domain;
 
-import com.mashle.calokilo.weightservice.domain.shared.NotValidWeightEntryException;
 import com.mashle.calokilo.weightservice.domain.shared.NotValidWeightTrackerException;
 import lombok.Builder;
 
 import java.time.LocalDate;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -18,7 +17,7 @@ public record WeightTracker(Long userId,
         validateInitialWeight(initialWeight);
         validateTargetWeight(targetWeight);
 
-        weightHistory = new LinkedList<>();
+        weightHistory = new ArrayList<>();
         weightHistory.add(WeightEntry.builder().weight(initialWeight).entryDate(LocalDate.now()).build());
     }
 
