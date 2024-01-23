@@ -5,6 +5,15 @@ spring:
     application:
         name: weight-service
 
+    data:
+        mongodb:
+            host: localhost
+            port: 27017
+            database: calokilo
+            username: root
+            password: verySecretPassword
+            authentication-database: admin
+
     activemq:
         broker-url: tcp://localhost:61616
         user: calokilo
