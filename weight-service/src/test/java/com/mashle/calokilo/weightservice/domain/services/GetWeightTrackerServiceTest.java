@@ -31,7 +31,7 @@ class GetWeightTrackerServiceTest {
     void setup() {
         weightTrackerRepository = mock(WeightTrackerRepository.class);
         userRepository = mock(UserRepository.class);
-        getWeightTrackerService = new GetWeightTrackerService(userRepository);
+        getWeightTrackerService = new GetWeightTrackerService(weightTrackerRepository, userRepository);
 
         validWeightTracker = WeightTracker.builder()
                 .userId(1L)
@@ -55,7 +55,7 @@ class GetWeightTrackerServiceTest {
 
     @Test
     void getWeightTracker_whenUserDoesNotExist_thenThrowException() {
-        when(userRepository.exists(1L)).thenReturn(true);
+        when(userRepository.exists(1L)).thenReturn(false);
         when(weightTrackerRepository.getById(1L)).thenReturn(validWeightTracker);
 
         assertThrows(UserNotFoundException.class, () -> getWeightTrackerService.getWeightTracker(1L));
