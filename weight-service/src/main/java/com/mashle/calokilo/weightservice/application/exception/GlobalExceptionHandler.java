@@ -1,7 +1,8 @@
 package com.mashle.calokilo.weightservice.application.exception;
 
-import com.mashle.calokilo.weightservice.domain.shared.UserNotFoundException;
-import com.mashle.calokilo.weightservice.domain.shared.WeightTrackerNotFoundException;
+import com.mashle.calokilo.weightservice.domain.shared.NotFoundException;
+import com.mashle.calokilo.weightservice.domain.shared.NotValidWeightEntryException;
+import com.mashle.calokilo.weightservice.domain.shared.NotValidWeightTrackerException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -13,8 +14,8 @@ import java.util.Date;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({UserNotFoundException.class})
-    public ResponseEntity<Object> handleUserNotFoundException(UserNotFoundException e, WebRequest request) {
+    @ExceptionHandler({NotFoundException.class})
+    public ResponseEntity<Object> handleNotFoundException(NotFoundException e, WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(new Date(), e.getMessage(), request.getDescription(false));
 
         return ResponseEntity
@@ -22,12 +23,21 @@ public class GlobalExceptionHandler {
                 .body(errorDetails);
     }
 
-    @ExceptionHandler({WeightTrackerNotFoundException.class})
-    public ResponseEntity<Object> handleUserNotFoundException(WeightTrackerNotFoundException e, WebRequest request) {
+    @ExceptionHandler({NotValidWeightEntryException.class})
+    public ResponseEntity<Object> handleNotValidWeightEntryException(NotValidWeightEntryException e, WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(new Date(), e.getMessage(), request.getDescription(false));
 
         return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
+                .status(HttpStatus.BAD_REQUEST)
+                .body(errorDetails);
+    }
+
+    @ExceptionHandler({NotValidWeightTrackerException.class})
+    public ResponseEntity<Object> handleNotValidWeightTrackerException(NotValidWeightTrackerException e, WebRequest request) {
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), e.getMessage(), request.getDescription(false));
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
                 .body(errorDetails);
     }
 }

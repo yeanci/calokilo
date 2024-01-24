@@ -6,6 +6,9 @@ import lombok.Builder;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Builder
 public record WeightTracker(Long userId,
@@ -17,8 +20,10 @@ public record WeightTracker(Long userId,
         validateInitialWeight(initialWeight);
         validateTargetWeight(targetWeight);
 
-        weightHistory = new ArrayList<>();
-        weightHistory.add(WeightEntry.builder().weight(initialWeight).entryDate(LocalDate.now()).build());
+        if(weightHistory == null) {
+            weightHistory = new ArrayList<>();
+            weightHistory.add(WeightEntry.builder().weight(initialWeight).entryDate(LocalDate.now()).build());
+        }
     }
 
     private void validateInitialWeight(double weight) {
@@ -31,5 +36,14 @@ public record WeightTracker(Long userId,
         if (weight < 0) {
             throw new NotValidWeightTrackerException("Invalid weight");
         }
+    }
+
+    public WeightTracker addOrUpdateWeightEntry(WeightEntry weightEntry) {
+        Map<LocalDate, WeightEntry> dateIndex = weightHistory.stream()
+                .collect(Collectors.toMap(WeightEntry::entryDate, Function.identity()));
+
+        dateIndex.put(weightEntry.entryDate(), weightEntry);
+
+        return new WeightTracker(this.userId, this.initialWeight, this.targetWeight, new ArrayList<>(dateIndex.values()));
     }
 }

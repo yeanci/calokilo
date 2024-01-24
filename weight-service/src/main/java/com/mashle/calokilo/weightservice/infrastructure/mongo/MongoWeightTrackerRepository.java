@@ -1,6 +1,5 @@
 package com.mashle.calokilo.weightservice.infrastructure.mongo;
 
-import com.mashle.calokilo.weightservice.domain.WeightEntry;
 import com.mashle.calokilo.weightservice.domain.WeightTracker;
 import com.mashle.calokilo.weightservice.domain.ports.WeightTrackerRepository;
 import lombok.AllArgsConstructor;
@@ -24,10 +23,5 @@ public class MongoWeightTrackerRepository implements WeightTrackerRepository {
     @Override
     public Optional<WeightTracker> getById(Long userId) {
         return weightTrackerRepository.findById(userId).map(WeightTrackerEntity::toWeightTracker);
-    }
-
-    @Override
-    public WeightEntry addWeightEntry(Long userId, WeightEntry weightEntry) {
-        return null;
     }
 }
