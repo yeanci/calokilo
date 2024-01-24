@@ -6,9 +6,9 @@ spring:
         name: user-service
 
     datasource:
-        url: jdbc:postgresql://localhost:5432/calokilo
-        username: calokilo-pg
-        password: verySecretPassword
+        url: ${SPRING_DATASOURCE_URL}
+        username: ${SPRING_DATASOURCE_USERNAME}
+        password: ${SPRING_DATASOURCE_PASSWORD}
 
     liquibase:
         change-log: classpath:db/changelog/db.changelog-master.yaml
@@ -22,11 +22,11 @@ spring:
                 dialect: org.hibernate.dialect.PostgreSQLDialect
 
     activemq:
-        broker-url: tcp://localhost:61616
-        user: calokilo
-        password: veryStrongPassword
+        broker-url: ${SPRING_JMS_URL}
+        user: ${SPRING_JMS_USERNAME}
+        password: ${SPRING_JMS_PASSWORD}
 
 eureka:
     client:
         serviceUrl:
-            defaultZone: http://localhost:8761/eureka/
+            defaultZone: http://discovery-server:8761/eureka/

@@ -1,0 +1,87 @@
+version: '3.8'
+
+services:
+    postgres-user:
+        container_name: postgres-user
+        image: postgres
+        environment:
+            POSTGRES_DB: ${POSTGRES_DB}
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            PGDATA: /data/postgres
+        volumes:
+            - ./postgres-data:/data/postgres
+        healthcheck:
+            test: [ "CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}", "-t", "1" ]
+            interval: 5s
+            timeout: 5s
+            retries: 5
+        ports:
+            - "5431:5431"
+
+    mongo-weight:
+        container_name: mongo-weight
+        image: mongo
+        environment:
+            MONGO_INITDB_ROOT_DATABASE: ${MONGO_DB}
+            MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+            MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+        ports:
+            - "27017:27017"
+        volumes:
+            - ./mongo-data:/data/db
+
+    activemq:
+        container_name: activemq
+        image: apache/activemq-classic
+        environment:
+            ACTIVEMQ_USER: ${ACTIVEMQ_USER}
+            ACTIVEMQ_PASSWORD: ${ACTIVEMQ_PASSWORD}
+        ports:
+            - "8161:8161"
+            - "61616:61616"
+
+    discovery-server:
+        build: discovery-server/
+        container_name: discovery-server
+        ports:
+            - "8761:8761"
+
+    user-service:
+        build: user-service/
+        container_name: user-service
+        environment:
+            SPRING_DATASOURCE_URL: ${SPRING_USER_DATASOURCE_URL}
+            SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+            SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+            SPRING_JMS_USERNAME: ${ACTIVEMQ_USER}
+            SPRING_JMS_PASSWORD: ${ACTIVEMQ_PASSWORD}
+            SPRING_JMS_URL: ${ACTIVEMQ_URL}
+        ports:
+            - "8080:8080"
+        depends_on:
+            postgres-user:
+                condition: service_healthy
+            activemq:
+                condition: service_started
+            discovery-server:
+                condition: service_started
+
+    weight-service:
+        build: weight-service/
+        container_name: weight-service
+        environment:
+            SPRING_DATASOURCE_HOST: ${MONGO_HOST}
+            SPRING_DATASOURCE_PORT: ${MONGO_PORT}
+            SPRING_DATASOURCE_DB: ${MONGO_DB}
+            SPRING_DATASOURCE_USERNAME: ${MONGO_USER}
+            SPRING_DATASOURCE_PASSWORD: ${MONGO_PASSWORD}
+            SPRING_JMS_USERNAME: ${ACTIVEMQ_USER}
+            SPRING_JMS_PASSWORD: ${ACTIVEMQ_PASSWORD}
+            SPRING_JMS_URL: ${ACTIVEMQ_URL}
+        ports:
+            - "8081:8081"
+        depends_on:
+            - mongo-weight
+            - activemq
+            - discovery-server

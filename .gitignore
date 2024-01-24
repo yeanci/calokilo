@@ -1,3 +1,6 @@
+mongo-data
+postgres-data
+
 **/target/
 !calokilo-user-service/.mvn/wrapper/maven-wrapper.jar
 !calokilo-weight-service/.mvn/wrapper/maven-wrapper.jar

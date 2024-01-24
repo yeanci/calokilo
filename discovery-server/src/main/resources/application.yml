@@ -1,6 +1,6 @@
 eureka:
     instance:
-        hostname: localhost
+        hostname: discovery-server
 
     client:
         registerWithEureka: false # as a server, we don't want to register as a service with eureka
