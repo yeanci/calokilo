@@ -5,6 +5,8 @@ import com.mashle.calokilo.weightservice.domain.ports.WeightTrackerRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 @AllArgsConstructor
 public class MongoWeightTrackerRepository implements WeightTrackerRepository {
@@ -19,7 +21,7 @@ public class MongoWeightTrackerRepository implements WeightTrackerRepository {
     }
 
     @Override
-    public WeightTracker getById(Long userId) {
-        return null;
+    public Optional<WeightTracker> getById(Long userId) {
+        return weightTrackerRepository.findById(userId).map(WeightTrackerEntity::toWeightTracker);
     }
 }

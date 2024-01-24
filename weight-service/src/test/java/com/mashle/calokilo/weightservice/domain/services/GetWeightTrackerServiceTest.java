@@ -5,6 +5,7 @@ import com.mashle.calokilo.weightservice.domain.WeightTracker;
 import com.mashle.calokilo.weightservice.domain.ports.UserRepository;
 import com.mashle.calokilo.weightservice.domain.ports.WeightTrackerRepository;
 import com.mashle.calokilo.weightservice.domain.shared.UserNotFoundException;
+import com.mashle.calokilo.weightservice.domain.shared.WeightTrackerNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,10 +15,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
 class GetWeightTrackerServiceTest {
 
@@ -42,9 +41,9 @@ class GetWeightTrackerServiceTest {
     }
 
     @Test
-    void getWeightTracker_whenUserExists_thenReturnUser() throws UserNotFoundException {
+    void getWeightTracker_whenUserExists_thenReturnUser() throws UserNotFoundException, WeightTrackerNotFoundException {
         when(userRepository.exists(1L)).thenReturn(true);
-        when(weightTrackerRepository.getById(1L)).thenReturn(validWeightTracker);
+        when(weightTrackerRepository.getById(1L)).thenReturn(Optional.of(validWeightTracker));
 
         // When
         WeightTracker weightTracker = getWeightTrackerService.getWeightTracker(1L);
@@ -56,10 +55,18 @@ class GetWeightTrackerServiceTest {
     @Test
     void getWeightTracker_whenUserDoesNotExist_thenThrowException() {
         when(userRepository.exists(1L)).thenReturn(false);
-        when(weightTrackerRepository.getById(1L)).thenReturn(validWeightTracker);
+        when(weightTrackerRepository.getById(1L)).thenReturn(Optional.of(validWeightTracker));
 
         assertThrows(UserNotFoundException.class, () -> getWeightTrackerService.getWeightTracker(1L));
 
         verify(weightTrackerRepository, times(0)).getById(1L);
+    }
+
+    @Test
+    void getWeightTracker_whenWeightTrackerDoesNotExist_thenThrowException() {
+        when(userRepository.exists(1L)).thenReturn(true);
+        when(weightTrackerRepository.getById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(WeightTrackerNotFoundException.class, () -> getWeightTrackerService.getWeightTracker(1L));
     }
 }

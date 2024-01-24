@@ -2,11 +2,14 @@ package com.mashle.calokilo.weightservice.infrastructure.mongo;
 
 import com.mashle.calokilo.weightservice.domain.WeightEntry;
 import com.mashle.calokilo.weightservice.domain.WeightTracker;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
+@NoArgsConstructor
 @Document("weight_tracker")
 public class WeightTrackerEntity {
 

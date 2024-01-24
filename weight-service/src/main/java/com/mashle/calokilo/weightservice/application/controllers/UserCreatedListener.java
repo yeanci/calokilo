@@ -1,4 +1,4 @@
-package com.mashle.calokilo.weightservice.application;
+package com.mashle.calokilo.weightservice.application.controllers;
 
 import com.mashle.calokilo.weightservice.domain.ports.CreateWeightTrackerPort;
 import com.mashle.calokilo.weightservice.domain.shared.UserNotFoundException;
