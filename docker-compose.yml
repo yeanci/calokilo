@@ -14,7 +14,7 @@ services:
         healthcheck:
             test: [ "CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}", "-t", "1" ]
             interval: 5s
-            timeout: 5s
+            timeout: 10s
             retries: 5
         ports:
             - "5431:5431"
@@ -82,6 +82,9 @@ services:
         ports:
             - "8081:8081"
         depends_on:
-            - mongo-weight
-            - activemq
-            - discovery-server
+            mongo-weight:
+                condition: service_started
+            activemq:
+                condition: service_started
+            discovery-server:
+                condition: service_started
